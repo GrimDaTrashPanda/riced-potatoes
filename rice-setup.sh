@@ -170,10 +170,12 @@ echo ""
 # ---------------------------------------------------------------------------
 log "Step 3/7: BeautyLine icons..."
 if [ ! -d "$ICON_DIR/BeautyLine" ]; then
-  if git clone --depth=1 https://github.com/mnjul/BeautyLine.git "$ICON_DIR/BeautyLine"; then
-    ok "BeautyLine cloned."
+  if command -v yay >/dev/null 2>&1; then
+    yay -S --noconfirm beautyline && ok "BeautyLine installed (AUR)." || err "BeautyLine install failed via yay."
+  elif command -v paru >/dev/null 2>&1; then
+    paru -S --noconfirm beautyline && ok "BeautyLine installed (AUR)." || err "BeautyLine install failed via paru."
   else
-    err "BeautyLine clone failed — check your internet connection."
+    err "BeautyLine needs yay or paru — install manually: https://aur.archlinux.org/packages/beautyline"
   fi
 else
   ok "BeautyLine already present, skipping."
