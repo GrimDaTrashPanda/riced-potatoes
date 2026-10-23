@@ -26,8 +26,8 @@ git add -A && git commit -m "refresh rice snapshot"
 ## Replicate on a new machine
 
 ```bash
-git clone <your-repo-url> rice
-cd rice
+git clone https://github.com/GrimDaTrashPanda/riced-potatoes.git ~/rice
+cd ~/rice
 ./rice-setup.sh
 ```
 
