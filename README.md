@@ -1,29 +1,8 @@
-# vaporwave-digicore rice — Orchis-Pink-Dark / BeautyLine / Qogir-Dark
+# anime-cyberpunk rice — Orchis-Pink-Dark / BeautyLine / Qogir-Dark
 
-Reproduces the current rice on a fresh EndeavourOS (GNOME/Wayland) install.
+Reproduces this rice on a fresh EndeavourOS (GNOME/Wayland) install.
 
-## Repo layout
-
-```
-rice/
-├── rice-setup.sh              # run this on the new machine
-├── generate-dconf-dump.sh     # run this on the OLD machine first, to refresh gnome-rice.dconf
-├── gnome-rice.dconf           # scoped dconf export (generated, not hand-edited)
-├── wallpaper.png              # your background image, renamed for portability
-└── rice-packages.txt          # `pacman -Qqe` output, for reference / bulk restore
-```
-
-## One-time: capture the current state (on Warranty-is-Void)
-
-```bash
-cd ~/rice
-./generate-dconf-dump.sh                    # writes gnome-rice.dconf
-cp ~/.local/share/backgrounds/2026-08-09-*.png ./wallpaper.png
-pacman -Qqe > rice-packages.txt
-git add -A && git commit -m "refresh rice snapshot"
-```
-
-## Replicate on a new machine
+## Install
 
 ```bash
 git clone https://github.com/GrimDaTrashPanda/riced-potatoes.git ~/rice
@@ -31,19 +10,25 @@ cd ~/rice
 ./rice-setup.sh
 ```
 
-That installs the packages it can, builds Orchis-Pink-Dark and clones
-BeautyLine from upstream, drops the wallpaper in place, enables the
-user-theme extension, and applies both `gsettings` and the scoped
-`gnome-rice.dconf`.
+Log out and back in afterwards so the GNOME Shell theme fully applies.
+
+## What it does
+
+- Builds the Orchis-Pink-Dark GTK/Shell theme from upstream
+- Installs BeautyLine icons (AUR, needs `yay` or `paru`)
+- Installs the Qogir-Dark cursor
+- Sets the wallpaper
+- Enables the user-theme extension
+- Applies the settings via `gsettings` and `gnome-rice.dconf`
+
+## Repo contents
+
+- `rice-setup.sh` — the installer
+- `gnome-rice.dconf` — scoped dconf export
+- `generate-dconf-dump.sh` — regenerates `gnome-rice.dconf` from a running system
+- `wallpaper.png` — background image
 
 ## Notes
 
-- `eos-qogir-icons` only exists in the EndeavourOS repos. On plain Arch the
-  script falls back to AUR's `qogir-icon-theme` if you have `yay`/`paru`
-  installed — otherwise it'll tell you to grab it manually.
-- The full `dconf dump /org/gnome/` you generated earlier is broader than
-  you want for a repo (network/geolocation state, per-window junk). Stick
-  to the scoped `desktop/interface/` dump — it's the only namespace that
-  actually matters for the theme.
-- Re-run `rice-setup.sh` any time — it's idempotent and skips anything
-  already in place.
+- `eos-qogir-icons` only exists in the EndeavourOS repos. On plain Arch the script falls back to the AUR, then to a manual install from source.
+- The script is safe to re-run. It skips anything already installed.
